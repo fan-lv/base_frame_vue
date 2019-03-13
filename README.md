@@ -1,4 +1,7 @@
-# epoch-ui
+# base-frame
+
+## 实现动态生成路由功能
+关键代码在 router.ts 文件中
 
 ## Project setup
 ```

@@ -9,11 +9,21 @@
     ]
   },
   "rules": {
-    "quotemark": [true, "single"],
-    "indent": [true, "spaces", 2],
-    "interface-name": false,
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "no-consecutive-blank-lines": false
+    "quotemark": [true, "double"], // 引用符号的格式为单引号或双引号
+    "indent": [true, "spaces", 4], // 代码缩进的大小，空格还是 tab
+    "interface-name": false, // 要求接口名称(interface)以大写“I”开头
+    "ordered-imports": false, // 要求将import语句按字母顺序排列并进行分组。
+    "object-literal-sort-keys": false, // 检查对象文字中键的排序。
+    "no-consecutive-blank-lines": false, // 不允许连续出现一个或多个空行。
+    "no-console": false, // 是否可以 console
+    "no-debugger": false, // 是否可以 debugger
+    "no-trailing-whitespace": false, // 每行代码后面能否有空格
+    "one-line": true, // 要求指定的标记与它们之前的表达式位于同一行。
+    "no-var-keyword": true, // 是否使用var来生成变量
+    "comment-format": [true, "check-space"], // 注释的开头必须加入一个空格字符
+    "whitespace": [true, "check-branch", "check-decl", "check-operator", "check-separator", "check-type"], // 检查代码中的空格
+    "prefer-const": true, // 要求变量声明使用 const 的，而不是 let 和 var 如果可能的话
+    "arrow-parens": true, // 箭头函数定义的参数需要括号
+    "member-access": false // 是否需要类成员的显式可见性声明。
   }
 }

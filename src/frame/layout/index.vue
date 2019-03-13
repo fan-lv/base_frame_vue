@@ -1,7 +1,16 @@
 <template lang="pug">
     #layout
         Sider(:style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}")
-            Menus
+            Menu(:active-name="activeName" theme="dark" width="auto")
+                template(v-for="(menu, index) in menus")
+                    MenuItem(v-if="!menu.children" :name="menu.key" :to="'/' + menu.key") {{menu.label}}
+                    Submenu(v-else :name="menu.key")
+                        template(slot="title") {{menu.label}}
+                        template(v-for="(secondMenu, secondMenuIndex) in menu.children")
+                            MenuItem(v-if="!secondMenu.children" :name="secondMenu.key" :to="'/' + menu.key + '/' + secondMenu.key") {{secondMenu.label}}
+                            Submenu(v-else :name="secondMenu.key")
+                                template(slot="title") {{secondMenu.label}}
+                                MenuItem(v-for="(thirdMenu, thirdIndex) in secondMenu.children" :key="thirdIndex" :name="thirdMenu.key" :to="'/' + menu.key + '/' + secondMenu.key + '/' + thirdMenu.key") {{thirdMenu.label}}
         Layout(:style="{marginLeft: '200px'}")
             Header(:style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}")
             Content(:style="{padding: '0 16px 16px'}")
@@ -13,17 +22,19 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import Menus from "@/common/layout/menus.vue";
-    // import {sessionMenus} from "@/check_session";
+    import {Vue, Component} from "vue-property-decorator";
+    import {sessionMenus} from "@/check_session";
 
-    @Component({
-        components: {
-            Menus,
-        },
-    })
-    export default class Layout extends Vue {
-        // menus: any[] = sessionMenus.menus;
+    @Component
+    export default class MyLayout extends Vue {
+        activeName: string = "";
+        menus: any[] = sessionMenus.menus;
+
+        mounted() {
+            const href = window.location.href;
+            const hrefArr = href.split("/");
+            this.activeName = hrefArr[hrefArr.length - 1];
+        }
     }
 </script>
 
