@@ -4,6 +4,7 @@ import store from "./store";
 import iview from "iview";
 import "iview/dist/styles/iview.css";
 import {checkSession} from "@/check_session";
+import "./highlight";
 
 Vue.use(iview);
 Vue.config.productionTip = false;

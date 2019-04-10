@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build && font-spider --no-backup --debug dist/index.html",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "highlight.js": "^9.15.6",
     "iview": "^3.3.0",
     "vue": "^2.6.6",
     "vue-class-component": "^6.0.0",

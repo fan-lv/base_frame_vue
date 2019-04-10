@@ -2,7 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 
 // 未开发的页面
-import notFind from "@/frame/not_find.vue";
+import notFind from "@/frame/not_find/not_find.vue";
 
 Vue.use(Router);
 
@@ -37,6 +37,23 @@ const menu2router = (menu: Menu, parent: RouterObj, index: number, thisRoutes: a
         name: menu.label,
     };
 
+    // 菜单下的子页面（如：新增，编辑页面）
+    if (menu.sub && menu.sub.length > 0) {
+        for (let i = 0, j = menu.sub.length; i < j; i++) {
+            const subRoutePath = route.path + "/" + (menu.sub[i].key || "index") + ".vue";
+            for (const key of Object.keys(cache)) {
+                if (key.indexOf(subRoutePath) !== -1) {
+                    thisRoutes[index] = {
+                        path: route.path + "/" + (menu.sub[i].key || "index"),
+                        name: menu.sub[i].label,
+                        component: cache[key],
+                    };
+                }
+            }
+        }
+    }
+
+    // 有子菜单
     if (menu.children && menu.children.length > 0) {
         const routeFilePath = route.path + "/index.vue";
         let fileComponent = null;
@@ -57,6 +74,7 @@ const menu2router = (menu: Menu, parent: RouterObj, index: number, thisRoutes: a
         }
     }
 
+    // 最后一级菜单
     const routePath = route.path + "/" + (menu.key || "index") + ".vue";
     for (const key of Object.keys(cache)) {
         if (key.indexOf(routePath) !== -1) {
@@ -70,6 +88,8 @@ const menu2router = (menu: Menu, parent: RouterObj, index: number, thisRoutes: a
             break;
         }
     }
+
+    // 未找到页面或仍在开发中
     if (!isFind) {
         thisRoutes.push({
             path: route.path,
