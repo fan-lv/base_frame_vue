@@ -26,23 +26,34 @@
 
 <style lang="stylus" scoped>
     .fullScreen {
+        position: relative;
         height: 100%;
-    }
 
-    img.rotating {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-left: -156px;
-        margin-top: -256px;
-        transition: opacity 2s ease-in;
-        animation: rotating 120s linear infinite;
-    }
+        img.rotating {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -256px;
+            margin-top: -256px;
+            transition: opacity 2s ease-in;
+            animation: rotating 120s linear infinite;
+        }
 
-    .notfound-text {
-        position: absolute;
-        bottom: 50px;
-        right: 50px;
+        .notfound-text {
+            position: absolute;
+            bottom: 50px;
+            right: 50px;
+
+            h1 {
+                color: #fff;
+            }
+        }
+
+        #canvas2d {
+            width: 100%;
+            height: 100%;
+        }
+
     }
 
     @keyframes rotating {

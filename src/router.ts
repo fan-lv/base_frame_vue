@@ -1,6 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
 
+// 登陆页面
+import login from "@/components/login.vue";
+
+// 菜单框架页面
+import layout from "@/frame/layout/index.vue";
+
 // 未开发的页面
 import notFind from "@/frame/not_find/not_find.vue";
 
@@ -72,30 +78,30 @@ const menu2router = (menu: Menu, parent: RouterObj, index: number, thisRoutes: a
         for (let i = 0, j = menu.children.length; i < j; i++) {
             menu2router(menu.children[i], route, i, thisRoutes[index].children);
         }
-    }
+    } else {
+        // 最后一级菜单
+        const routePath = route.path + "/" + (menu.key || "index") + ".vue";
+        for (const key of Object.keys(cache)) {
+            if (key.indexOf(routePath) !== -1) {
+                isFind = true;
+                const obj: RouterObj = {
+                    path: route.path,
+                    name: route.name,
+                    component: cache[key],
+                };
+                thisRoutes.push(obj);
+                break;
+            }
+        }
 
-    // 最后一级菜单
-    const routePath = route.path + "/" + (menu.key || "index") + ".vue";
-    for (const key of Object.keys(cache)) {
-        if (key.indexOf(routePath) !== -1) {
-            isFind = true;
-            const obj: RouterObj = {
+        // 未找到页面或仍在开发中
+        if (!isFind) {
+            thisRoutes.push({
                 path: route.path,
                 name: route.name,
-                component: cache[key],
-            };
-            thisRoutes.push(obj);
-            break;
+                component: notFind,
+            });
         }
-    }
-
-    // 未找到页面或仍在开发中
-    if (!isFind) {
-        thisRoutes.push({
-            path: route.path,
-            name: route.name,
-            component: notFind,
-        });
     }
 };
 
@@ -104,14 +110,40 @@ export const getRouter = (menusArr: any[]) => {
         menu2router(menu, {path: "", name: ""}, index, routes);
     });
 
-    routes.push({
+    const routesNew: any[] = [{
         path: "/",
-        redirect: routes[0].path,
+        component: layout,
+        children: routes,
+    }];
+
+    routesNew.push({
+        path: "/login",
+        name: "登陆",
+        component: login,
     });
+
+    if (routesNew[0].children[0].children && routesNew[0].children[0].children.length > 0) {
+        if (routesNew[0].children[0].children[0].children && routesNew[0].children[0].children[0].children.length > 0) {
+            routesNew[0].children.push({
+                path: "/",
+                redirect: routesNew[0].children[0].children[0].children[0].path,
+            });
+        } else {
+            routesNew[0].children.push({
+                path: "/",
+                redirect: routesNew[0].children[0].children[0].path,
+            });
+        }
+    } else {
+        routesNew[0].children.push({
+            path: "/",
+            redirect: routesNew[0].children[0].path,
+        });
+    }
 
     return new Router({
         mode: "history",
         base: process.env.BASE_URL,
-        routes,
+        routes: routesNew,
     });
 };

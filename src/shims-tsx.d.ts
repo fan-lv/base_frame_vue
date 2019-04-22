@@ -15,3 +15,10 @@ declare global {
         }
     }
 }
+
+declare module "vue/types/vue" {
+    interface Vue {
+        apiConfig: any;
+        $axios: any;
+    }
+}
